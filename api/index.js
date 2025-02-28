@@ -2,12 +2,21 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+const path = require("path");
 const { parseString } = require("xml2js");
 require("dotenv").config();
 
 const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
+
+// Serve the entire project root (one level up from /api)
+app.use(express.static(path.join(__dirname, "..")));
+
+// If you specifically want index.html from the root:
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "index.html"));
+});
 
 // API Keys from .env
 const HFF_API_KEY = process.env.HFF_API_KEY;
