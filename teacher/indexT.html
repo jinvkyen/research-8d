@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="flex bg-gray-100">
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="w-64 bg-white text-white h-screen fixed transition-all duration-300 transform -translate-x-full md:translate-x-0 p-4">
+      <nav class="text-black pt-24">
+        <a href="./indexT.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700">Home <br>
+          <span class="font-normal text-sm text-black">Dashboard & Modules</span>
+        </a>
+        <a href="./indexT.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm flex items-center content-center"><i class="ph ph-house text-indigo-700 text-xl pr-2"></i> Dashboard</a>
+        <a href="#" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm"><i class="fa-regular fa-user pr-2"></i> Account Settings</a>
+        <a href="#" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm"><i class="fa-solid fa-link pr-2"></i> Parent & Student Linking</a>
+      </nav>
+    </div>
+
+    <!-- Main Section -->
+    <div class="flex-1 flex flex-col md:ml-64">
+        <!-- Navbar -->
+      <div class="bg-white shadow-md p-6 flex justify-between items-center">
+        <button id="menu-btn" class="md:hidden p-2 bg-blue-500 text-white rounded">☰</button>
+        <div class="pr-2"></div>
+        <div class="flex justify-between items-center w-full">
+            <button class="p-1 rounded-sm bg-red-100 text-red-500 font-semibold text-xs"><i class="ph ph-command"></i> Modules</button>
+            <div class="flex justify-end items-center content-center">
+                <div class=" relative">
+                    <!-- Dropdown Button -->
+                    <button id="accountBtn" class="ml-auto bg-lime-500 p-1.5 text-white font-semibold text-sm rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-circle-info"></i> Teacher Account
+                        <i class="fa-solid fa-chevron-down ml-1"></i>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="accountDropdown" class="absolute right-0 mt-2 w-44 bg-white border border-gray-300 rounded-lg shadow-lg hidden">
+                        <ul class="py-2 text-sm text-gray-700">
+                        <li>
+                            <a href="/index.html" class="block px-4 py-2 hover:bg-indigo-100 flex items-center gap-2">
+                            <i class="fa-solid fa-user-graduate text-blue-500"></i> Student Account
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/teacher/indexT.html" class="block px-4 py-2 hover:bg-indigo-100 flex items-center gap-2">
+                            <i class="fa-solid fa-chalkboard-teacher text-indigo-500"></i> Teacher Account
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="p-2"><i class="fa-regular fa-bell"></i></p>
+                    <p class="p-2"><i class="fa-solid fa-expand"></i></p>
+                    <p class="p-2"><i class="fa-solid fa-circle-user fa-2xl"></i>
+                    <p class="text-sm text-blue-700 leading-none font-semibold"><i class="fa-solid fa-circle-check"></i> User, Name<br>
+                        <span class="text-xs text-gray-400 font-normal">username@gmail.com <i class="fa-solid fa-caret-down"></i></span> <br>
+                        <span class="text-sm text-blue-700 leading-none font-semibold">Dev Site • S.Y. 2024-2025</span>
+                    </p>
+                </p>
+            </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+       <div class="p-6">
+        <h2 class="text-4xl font-bold text-blue-800">Dashboard
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="bg-white p-4 rounded-lg shadow justify-center items-center flex flex-col">
+                    <h3 class="text-lg font-semibold text-center mb-2">AI Content Checker Report</h3>
+                    <canvas id="aiContentChart" class="max-w-[410px] max-h-[410px]"></canvas>
+
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow justify-center items-center flex flex-col">
+                    <h3 class="text-lg font-semibold text-center mb-2">Plagiarism Checker Report</h3>
+                    <canvas id="plagiarismChart" class="max-w-[410px] max-h-[410px]"></canvas>
+                </div>
+            </div>
+
+
+            <div class="flex items-center flex-row mt-12">
+                <div class="p-6 bg-white shadow-md rounded-2xl max-w-md hover:shadow-lg hover:bg-indigo-50">
+                    <!-- Icon and Title -->
+                    <div class="flex flex-col justify-center text-center items-center space-x-4">
+                        <a href="./modulesT.html">
+                           <div><i class="ph ph-graduation-cap text-7xl"></i></div>
+                            <button class="px-12 py-2 font-semibold text-lg">View Modules</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+
+
+
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const menuBtn = document.getElementById("menu-btn");
+
+      menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
+    </script>
+
+    <script>
+      document.getElementById('accountBtn').addEventListener("click", function () {
+        document.getElementById('accountDropdown').classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', function (action) {
+        const dropdown = document.getElementById('accountDropdown');
+        const button = document.getElementById('accountBtn');
+
+        if(!button.contains(action.target) && !dropqdown.contains(action.target)) {
+          dropdown.classList.add('hidden');
+        }
+       });
+    </script>
+
+<script>
+        // AI Content Report Data
+        const aiContentData = {
+            labels: ["Student-Generated Works", "AI-Generated Works", "Unchecked Works"],
+            datasets: [{
+                data: [52.71, 32.13, 15.16], // Example percentages
+                backgroundColor: ["#6b03fc", "#223F55", "#E6B768"],
+                hoverOffset: 5
+            }]
+        };
+
+        // Plagiarism Report Data
+        const plagiarismData = {
+            labels: ["Unplagiarized Works", "Plagiarized Works", "Unchecked Works"],
+            datasets: [{
+                data: [58.9, 28.22, 12.88], // Example percentages
+                backgroundColor: ["#7AC7C4", "#223F55", "#E6B768"],
+                hoverOffset: 5
+            }]
+        };
+
+        // Chart Config
+        function createChart(ctx, data) {
+            return new Chart(ctx, {
+                type: "pie",
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render Charts
+        createChart(document.getElementById("aiContentChart"), aiContentData);
+        createChart(document.getElementById("plagiarismChart"), plagiarismData);
+    </script>
+</body>
+</html>

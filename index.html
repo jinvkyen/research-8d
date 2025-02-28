@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex bg-gray-100">
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="w-64 bg-white text-white h-screen fixed transition-all duration-300 transform -translate-x-full md:translate-x-0 p-4">
+      <nav class="text-black pt-24">
+        <a href="/index.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700">Home <br>
+          <span class="font-normal text-sm text-black">Dashboard & Modules</span>
+        </a>
+        <a href="/index.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm flex items-center content-center"><i class="ph ph-house text-indigo-700 text-xl pr-2"></i> Dashboard</a>
+        <a href="#" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm"><i class="fa-regular fa-user pr-2"></i> Account Settings</a>
+        <a href="#" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm"><i class="fa-solid fa-link pr-2"></i> Parent & Student Linking</a>
+      </nav>
+    </div>
+
+    <!-- Main Section -->
+    <div class="flex-1 flex flex-col md:ml-64">
+      <!-- Navbar -->
+      <div class="bg-white shadow-md p-6 flex justify-between items-center">
+        <button id="menu-btn" class="md:hidden p-2 bg-blue-500 text-white rounded">☰</button>
+        <div class="pr-2"></div>
+        <div class="flex justify-between items-center w-full">
+          <button class="p-1 rounded-sm bg-red-100 text-red-500 font-semibold text-xs"><i class="ph ph-command"></i> Modules</button>
+          <div class="flex justify-end items-center content-center">
+
+              <div class=" relative">
+              <!-- Dropdown Button -->
+              <button id="accountBtn" class="ml-auto bg-lime-500 p-1.5 text-white font-semibold text-sm rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-circle-info"></i> Student Account
+                <i class="fa-solid fa-chevron-down ml-1"></i>
+              </button>
+
+              <!-- Dropdown Menu -->
+              <div id="accountDropdown" class="absolute right-0 mt-2 w-44 bg-white border border-gray-300 rounded-lg shadow-lg hidden">
+                <ul class="py-2 text-sm text-gray-700">
+                  <li>
+                    <a href="index.html" class="block px-4 py-2 hover:bg-indigo-100 flex items-center gap-2">
+                      <i class="fa-solid fa-user-graduate text-blue-500"></i> Student Account
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/teacher/indexT.html" class="block px-4 py-2 hover:bg-indigo-100 flex items-center gap-2">
+                      <i class="fa-solid fa-chalkboard-teacher text-indigo-500"></i> Teacher Account
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="p-2"><i class="fa-regular fa-bell"></i></p>
+            <p class="p-2"><i class="fa-solid fa-expand"></i></p>
+            <p class="p-2"><i class="fa-solid fa-circle-user fa-2xl"></i>
+              <p class="text-sm text-blue-700 leading-none font-semibold"><i class="fa-solid fa-circle-check"></i> User, Name<br>
+                <span class="text-xs text-gray-400 font-normal">username@gmail.com <i class="fa-solid fa-caret-down"></i></span> <br>
+                <span class="text-sm text-blue-700 leading-none font-semibold">Dev Site • S.Y. 2024-2025</span>
+              </p>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+       <div class="p-6">
+        <h2 class="text-4xl font-bold text-blue-800 mt-5">Hello, User. <br>
+        <span class="mt-2 text-lg font-semibold text-blue-500">Welcome to DevSite, your partner in academic success! <br>
+        <div class="flex items-center flex-row mt-8">
+            <div class="p-6 bg-white shadow-md rounded-2xl border-2 border-l-blue-700 max-w-md">
+                <!-- Icon and Title -->
+                <div class="flex items-center space-x-4">
+                    <img src="/images/ai.jpg" class="w-12 h-12" alt="AI Icon">
+                    <h2 class="text-2xl font-semibold text-black">Content Integrity</h2>
+                </div>
+
+                <!-- School Year -->
+                <p class="text-blue-700 font-bold mt-2 text-xs">S.Y. 2025–2026</p>
+
+                <!-- Description -->
+                <p class="text-gray-500 mt-2 text-sm font-bold">
+                    Streamline research and ensure originality with our AI-driven Research Assistant and Plagiarism Checker.
+                </p>
+
+                <!-- Button -->
+                <div class="mt-6">
+                    <a href="/student/modules.html">
+                        <button class="px-6 py-2 bg-indigo-600 text-white font-semibold text-lg rounded-full hover:bg-indigo-700 transition">
+                            View
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const menuBtn = document.getElementById("menu-btn");
+
+      menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
+    </script>
+
+    <script>
+      document.getElementById('accountBtn').addEventListener("click", function () {
+        document.getElementById('accountDropdown').classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', function (action) {
+        const dropdown = document.getElementById('accountDropdown');
+        const button = document.getElementById('accountBtn');
+
+        if(!button.contains(action.target) && !dropqdown.contains(action.target)) {
+          dropdown.classList.add('hidden');
+        }
+       });
+    </script>
+  </body>
+</html>

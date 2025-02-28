@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex bg-gray-100">
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="w-64 bg-white text-white h-screen fixed transition-all duration-300 transform -translate-x-full md:translate-x-0 p-4">
+      <nav class="text-black pt-24">
+        <a href="/index.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700">Home <br>
+          <span class="font-normal text-sm text-black">Dashboard & Modules</span>
+        </a>
+        <a href="/index.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm flex items-center content-center"><i class="ph ph-house text-indigo-700 text-xl pr-2"></i> Dashboard</a>
+        <a href="/index.html" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm"><i class="fa-regular fa-user pr-2"></i> Account Settings</a>
+        <a href="#" class="block py-4 px-4 rounded-lg hover:bg-purple-100 font-semibold text-indigo-700 text-sm"><i class="fa-solid fa-link pr-2"></i> Parent & Student Linking</a>
+      </nav>
+    </div>
+
+    <!-- Main Section -->
+    <div class="flex-1 flex flex-col md:ml-64">
+      <!-- Navbar -->
+      <div class="bg-white shadow-md p-6 flex justify-between items-center">
+        <button id="menu-btn" class="md:hidden p-2 bg-blue-500 text-white rounded">☰</button>
+        <div class="pr-2"></div>
+        <div class="flex items-center w-full">
+          <p class="p-1 rounded-sm bg-red-100 text-red-500 font-semibold text-xs"><i class="ph ph-command"></i> Modules</p>
+          <p class="ml-auto bg-lime-500 p-1.5 text-white font-semibold text-sm rounded-full"><i class="fa-solid fa-circle-info"></i> Student Account</p>
+          <p class="p-2"><i class="fa-regular fa-bell"></i></p>
+          <p class="p-2"><i class="fa-solid fa-expand"></i></p>
+          <p class="p-2"><i class="fa-solid fa-circle-user fa-2xl"></i>
+            <p class="text-sm text-blue-700 leading-none font-semibold"><i class="fa-solid fa-circle-check"></i> User, Name<br>
+              <span class="text-xs text-gray-400 font-normal">username@gmail.com <i class="fa-solid fa-caret-down"></i></span> <br>
+              <span class="text-sm text-blue-700 leading-none font-semibold">Dev Site • S.Y. 2024-2025</span>
+            </p>
+          </p>
+        </div>
+      </div>
+
+      <!-- Content -->
+       <div class="p-6">
+        <div class="p-2 rounded-lg bg-white shadow-md h-full">
+          <div class="my-12">
+            <div class="flex flex-col leading-none">
+              <h2 class="text-3xl font-bold text-indigo-600 text-center">Let's get started with your research</h2>
+              <p class="mt-2 font-semibold text-gray-400 text-center">Choose a feature to start using.</p>
+            </div>
+            <div class="flex flex-col mt-10 mx-64">
+              <div class="flex flex-row justify-between items-center content-center mb-10">
+                <h2 class="text-lg font-bold text-black leading-none">ResearchAIde <br>
+                  <span class="mt-2 text-sm font-semibold text-gray-400">Get personalized research suggestions and writing help <br>
+                 <a href="/student/researchaide.html"> <button class="text-indigo-600 border border-indigo-600 rounded-full p-2 font-sm font-bold mt-2 hover:bg-indigo-600 hover:text-white">Get Started</button></a></span>
+                </h2>
+                <img src="/images/robot.jpg" alt="" class="w-20 h-20">
+              </div>
+              <div class="flex flex-row justify-between items-center content-center mb-10">
+                <h2 class="text-lg font-bold text-black leading-none">Plagiarism Checker <br>
+                  <span class="mt-2 text-sm font-semibold text-gray-400">Upload your paper to check for plagiarism against billions of sources<br>
+                 <a href="/student/plagiarism.html"> <button class="text-indigo-600 border border-indigo-600 rounded-full p-2 font-sm font-bold mt-2 hover:bg-indigo-600 hover:text-white">Get Started</button></a></span>
+                </h2>
+                <img src="/images/check.jpg" alt="" class="w-20 h-20">
+              </div>
+              <div class="flex flex-row justify-between items-center content-center">
+                <h2 class="text-lg font-bold text-black leading-none">AI Detection <br>
+                  <span class="mt-2 text-sm font-semibold text-gray-400">Detect AI-generated text and file <br>
+                 <a href="/student/aicontent.html"> <button class="text-indigo-600 border border-indigo-600 rounded-full p-2 font-sm font-bold mt-2 hover:bg-indigo-600 hover:text-white">Get Started</button></a></span>
+                </h2>
+                <img src="/images/eye.jpg" alt="" class="w-20 h-20">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const menuBtn = document.getElementById("menu-btn");
+
+      menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
+    </script>
+  </body>
+</html>
