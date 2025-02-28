@@ -445,6 +445,3 @@ function parseArxivEntry(entry) {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 console.log("HFF_API_KEY:", HFF_API_KEY);
-
-const serverless = require("serverless-http");
-module.exports = serverless(app);
