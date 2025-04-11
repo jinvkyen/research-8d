@@ -4,6 +4,7 @@ const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
 const { parseString } = require("xml2js");
+
 require("dotenv").config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 const HFF_API_KEY = process.env.HFF_API_KEY;
 const CORE_API_KEY = process.env.CORE_API_KEY;
 const SUMMARIZATION_URL = process.env.SUMMARIZATION_URL;
+const ARXIV_URL = process.env.ARXIV_URL;
 
 // Fetch from multiple sources
 const API_TIMEOUT = 8000; // 8 seconds per external API call
@@ -86,16 +88,14 @@ async function fetchPapers(query, sources = ["arxiv", "core", "semantic"], limit
 async function fetchWithTimeout(fetcher, timeout) {
   return Promise.race([
     fetcher(),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("API timeout")), timeout)
-    )
+    new Promise((_, reject) => setTimeout(() => reject(new Error("API timeout")), timeout)),
   ]);
 }
 
 // Fetch Papers from arXiv
 async function fetchArxivPapers(query, limit = 5, signal) {
   try {
-    const url = `http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&max_results=${limit}`;
+    const url = ARXIV_URL;
     const response = await axios.get(url, {
       signal,
       timeout: API_TIMEOUT,
@@ -109,7 +109,7 @@ async function fetchArxivPapers(query, limit = 5, signal) {
         } else {
           const entries = result.feed?.entry || [];
           const papers = entries.map((entry) => {
-            const publishedDateRaw = entry.published[0]; // e.g., "2024-07-05T14:36:19Z"
+            const publishedDateRaw = entry.published[0];
             const parsedDate = new Date(publishedDateRaw);
             let formattedDate = "Unknown";
             if (!isNaN(parsedDate)) {
@@ -124,7 +124,7 @@ async function fetchArxivPapers(query, limit = 5, signal) {
               authors: entry.author.map((a) => a.name[0]),
               abstract: entry.summary[0],
               date: publishedDateRaw,
-              formattedDate, // e.g., "July 5, 2024"
+              formattedDate,
               year: isNaN(parsedDate.getFullYear()) ? "Unknown" : parsedDate.getFullYear(),
               journal: entry["arxiv:journal_ref"]?.[0] || "N/A",
               url: entry.id[0],
@@ -145,7 +145,6 @@ async function fetchArxivPapers(query, limit = 5, signal) {
     return [];
   }
 }
-
 
 // Fetch Papers from CORE
 async function fetchCorePapers(query, limit = 5) {
@@ -201,7 +200,6 @@ async function fetchCorePapers(query, limit = 5) {
   }
 }
 
-
 // Fetch Papers from Semantic Scholar
 async function fetchSemanticScholarPapers(query, limit = 5, signal) {
   try {
@@ -255,7 +253,6 @@ async function fetchSemanticScholarPapers(query, limit = 5, signal) {
     return [];
   }
 }
-
 
 // Summarization Helper
 async function summarizeText(text) {
@@ -323,9 +320,7 @@ app.post("/api/search", async (req, res) => {
     }
 
     // Setup timeout protection
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Search timeout")), 9000)
-    );
+    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Search timeout")), 9000));
 
     const searchPromise = (async () => {
       const papers = await fetchPapers(query, sources, Math.min(limit, MAX_RESULTS));
@@ -337,39 +332,34 @@ app.post("/api/search", async (req, res) => {
 
       // Parallel processing with safety
       const enhancedPapers = await Promise.allSettled(
-        papers.map(async paper => ({
+        papers.map(async (paper) => ({
           ...paper,
-          insight: await summarizeText(paper.abstract)
+          insight: await summarizeText(paper.abstract),
         }))
       );
 
-      return enhancedPapers
-        .filter(result => result.status === "fulfilled")
-        .map(result => result.value);
+      return enhancedPapers.filter((result) => result.status === "fulfilled").map((result) => result.value);
     })();
 
     const papers = await Promise.race([searchPromise, timeoutPromise]);
 
     // Generate citations
-    const results = papers.map(paper => ({
+    const results = papers.map((paper) => ({
       ...paper,
       citations: ["apa", "mla", "chicago"].reduce((acc, style) => {
         acc[style] = generateCitation(paper, style);
         return acc;
-      }, {})
+      }, {}),
     }));
 
     console.log(`Search completed in ${Date.now() - startTime}ms`);
     res.json({ results });
-
   } catch (error) {
     console.error(`Search failed after ${Date.now() - startTime}ms:`, error);
     const statusCode = error.message.includes("timeout") ? 504 : 500;
     res.status(statusCode).json({
-      error: error.message.includes("timeout")
-        ? "Search took too long - try simplifying your query"
-        : "Search failed",
-      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+      error: error.message.includes("timeout") ? "Search took too long - try simplifying your query" : "Search failed",
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 });
@@ -388,10 +378,10 @@ app.get("/api/paper/:id", async (req, res) => {
     let paperDetails = null;
 
     if (source === "arxiv") {
-      const response = await axios.get(
-        `http://export.arxiv.org/api/query?id_list=${id}`,
-        { signal: controller.signal, timeout: API_TIMEOUT }
-      );
+      const response = await axios.get(`http://export.arxiv.org/api/query?id_list=${id}`, {
+        signal: controller.signal,
+        timeout: API_TIMEOUT,
+      });
 
       paperDetails = await new Promise((resolve, reject) => {
         parseString(response.data, (err, result) => {
@@ -410,17 +400,14 @@ app.get("/api/paper/:id", async (req, res) => {
 
     clearTimeout(timeoutId);
     res.json({ paper: paperDetails });
-
   } catch (error) {
     clearTimeout(timeoutId);
     console.error("Paper details error:", error);
 
     const statusCode = axios.isCancel(error) ? 504 : 500;
     res.status(statusCode).json({
-      error: axios.isCancel(error)
-        ? "Paper details request timed out"
-        : "Failed to retrieve paper details",
-      ...(process.env.NODE_ENV === 'development' && { details: error.message })
+      error: axios.isCancel(error) ? "Paper details request timed out" : "Failed to retrieve paper details",
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 });
